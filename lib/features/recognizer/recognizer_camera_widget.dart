@@ -49,8 +49,8 @@ class _RecognizerCameraWidgetState extends State<RecognizerCameraWidget>
 
   @override
   void dispose() {
-    _controller?.dispose();
     super.dispose();
+    _controller?.dispose();
   }
 
   @override
@@ -116,17 +116,6 @@ class _RecognizerCameraWidgetState extends State<RecognizerCameraWidget>
       return Container();
     }
 
-    var size = MediaQuery.of(context).size;
-
-    var screenW = math.min(size.height, size.width);
-    size = _controller.value.previewSize;
-
-    return Container(
-      child: CameraPreview(_controller),
-      constraints: BoxConstraints(
-        maxHeight: 500,
-        maxWidth: screenW,
-      ),
-    );
+    return CameraPreview(_controller);
   }
 }

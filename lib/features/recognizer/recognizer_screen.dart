@@ -41,35 +41,24 @@ class _RecognizerScreenState extends State<RecognizerScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Size screen = MediaQuery.of(context).size;
-
-    return RotatedBox(
-      quarterTurns: 1,
-      child: Scaffold(
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(20.0),
-          child: AppBar(
-            centerTitle: true,
-            title: const Text('TFlite Real Time Classification'),
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: const Text('TFlite Real Time Classification'),
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: RecognizerCameraWidget(
+              setRecognitions,
+            ),
           ),
-        ),
-        body: Stack(
-          children: [
-            RotatedBox(
-              quarterTurns: -1,
-              child: RecognizerCameraWidget(
-                setRecognitions,
-              ),
-            ),
-            RecognizerTextPreview(
+          Flexible(
+            child: RecognizerTextPreview(
               _recognitions == null ? [] : _recognitions,
-              math.max(_imageHeight, _imageWidth),
-              math.min(_imageHeight, _imageWidth),
-              screen.height,
-              screen.width,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
