@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
@@ -71,12 +72,16 @@ class _CameraWidgetState extends State<CameraWidget>
         math.max(previewSize.height, previewSize.width),
       );
 
-      print(previewSize);
-
       CameraConfig.inputImageSize = previewSize;
 
       Size screenSize = MediaQuery.of(context).size;
       CameraConfig.screenSize = screenSize;
+
+      if (Platform.isAndroid) {
+        CameraConfig.ratio = screenSize.width / previewSize.width;
+      } else {
+        CameraConfig.ratio = screenSize.width / previewSize.width;
+      }
     }();
   }
 
