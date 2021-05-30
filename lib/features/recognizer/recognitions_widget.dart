@@ -19,10 +19,10 @@ class RecognitionsWidget extends StatelessWidget {
     double screenH,
     double screenW,
   ) {
-    var _x = recognition.x;
-    var _w = recognition.w;
-    var _y = recognition.y;
-    var _h = recognition.h;
+    var _x = recognition.location.left;
+    var _w = recognition.location.width;
+    var _y = recognition.location.top;
+    var _h = recognition.location.height;
     var scaleW, scaleH, x, y, w, h;
 
     if (screenH / screenW > previewH / previewW) {
@@ -46,12 +46,9 @@ class RecognitionsWidget extends StatelessWidget {
     }
 
     return new Recognition(
-      x,
-      y,
-      w,
-      h,
-      recognition.confidence,
       recognition.label,
+      recognition.confidence,
+      new Rect.fromLTWH(x, y, w, h),
     );
   }
 
@@ -61,9 +58,13 @@ class RecognitionsWidget extends StatelessWidget {
 
     return Stack(
       children: recognitions
-          .map((recognition) => this.updateRecognitionPosition(
-              recognition, screen.height, screen.width))
-          .map((recognition) => new RecognitionWidget(recognition))
+          .map(
+            (recognition) => this.updateRecognitionPosition(
+                recognition, screen.height, screen.width),
+          )
+          .map(
+            (recognition) => new RecognitionWidget(recognition),
+          )
           .toList(),
     );
   }

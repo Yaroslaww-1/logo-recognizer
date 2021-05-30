@@ -109,14 +109,28 @@ class _CameraWidgetState extends State<CameraWidget>
       threshold: 0.5,
     );
 
+    // var _recognitions = recognitions
+    //     .map((recognition) => new Recognition(
+    //         recognition['rect']['x'],
+    //         recognition['rect']['y'],
+    //         recognition['rect']['w'],
+    //         recognition['rect']['h'],
+    //         recognition["confidenceInClass"],
+    //         recognition['detectedClass']))
+    //     .toList();
     var _recognitions = recognitions
-        .map((recognition) => new Recognition(
-            recognition['rect']['x'],
-            recognition['rect']['y'],
-            recognition['rect']['w'],
-            recognition['rect']['h'],
+        .map(
+          (recognition) => new Recognition(
+            recognition['detectedClass'],
             recognition["confidenceInClass"],
-            recognition['detectedClass']))
+            new Rect.fromLTWH(
+              recognition['rect']['x'],
+              recognition['rect']['y'],
+              recognition['rect']['w'],
+              recognition['rect']['h'],
+            ),
+          ),
+        )
         .toList();
 
     print(recognitions);
