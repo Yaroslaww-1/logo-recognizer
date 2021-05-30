@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:tflite/tflite.dart';
 
@@ -34,12 +36,19 @@ class _SSDRecognizerScreenState extends State<SSDRecognizerScreen> {
   }
 
   Future<void> disposeModel() async {
-    await Tflite.close();
+    Timer(Duration(seconds: 1), () {
+      Tflite.close();
+    });
   }
 
   void setRecognitions(
       List<Recognition> recognitions, int imageHeight, int imageWidth) {
     print("SSD $recognitions");
+
+    if (!mounted) {
+      return;
+    }
+
     setState(() {
       _recognitions = recognitions;
     });

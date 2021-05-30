@@ -22,6 +22,10 @@ class _CameraWidgetState extends State<CameraWidget>
 
   bool _isDetecting = false;
   void setIsDetecting(bool isDetecting) {
+    if (!mounted) {
+      return;
+    }
+
     setState(() {
       _isDetecting = isDetecting;
     });

@@ -15,6 +15,11 @@ class _YOLORecognizerScreenState extends State<YOLORecognizerScreen> {
   void setRecognitions(
       List<Recognition> recognitions, int imageHeight, int imageWidth) {
     print("YOLO $recognitions");
+
+    if (!mounted) {
+      return;
+    }
+
     setState(() {
       _recognitions = recognitions;
     });
