@@ -1,3 +1,0 @@
-/home/yaroslav/Programming/flutter/logo-recognizer/android/app/.cxx/cmake/debug/x86/CMakeFiles/rebuild_cache.dir
-/home/yaroslav/Programming/flutter/logo-recognizer/android/app/.cxx/cmake/debug/x86/CMakeFiles/edit_cache.dir
-/home/yaroslav/Programming/flutter/logo-recognizer/android/app/.cxx/cmake/debug/x86/CMakeFiles/convertImage.dir
