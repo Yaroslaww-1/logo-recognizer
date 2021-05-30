@@ -39,7 +39,6 @@ class RecognitionIsolate {
     final DynamicLibrary convertImageLib = Platform.isAndroid
         ? DynamicLibrary.open("libconvertImage.so")
         : DynamicLibrary.process();
-    // Load the convertImage() function from the library
     Convert conv = convertImageLib
         .lookup<NativeFunction<convert_func>>('convertImage')
         .asFunction<Convert>();
@@ -51,11 +50,8 @@ class RecognitionIsolate {
           interpreter: Interpreter.fromAddress(isolateData.interpreterAddress),
           labels: isolateData.labels,
         );
-        // imageLib.Image image =
-        //     ImageUtils.convertImagetoPng(isolateData.cameraImage);
         imageLib.Image image;
         if (Platform.isAndroid) {
-          // Allocate memory for the 3 planes of the image
           Pointer<Uint8> p =
               calloc.allocate(isolateData.cameraImage.planes[0].bytes.length);
           Pointer<Uint8> p1 =
@@ -63,7 +59,6 @@ class RecognitionIsolate {
           Pointer<Uint8> p2 =
               calloc.allocate(isolateData.cameraImage.planes[2].bytes.length);
 
-          // Assign the planes data to the pointers of the image
           Uint8List pointerList =
               p.asTypedList(isolateData.cameraImage.planes[0].bytes.length);
           Uint8List pointerList1 =
@@ -93,16 +88,13 @@ class RecognitionIsolate {
               isolateData.cameraImage.planes[0].bytesPerRow,
               isolateData.cameraImage.height);
 
-          // Get the pointer of the data returned from the function to a List
           List imgData = imgP.asTypedList(
               (isolateData.cameraImage.planes[0].bytesPerRow *
                   isolateData.cameraImage.height));
-          // Generate image from the converted data
+
           image = imageLib.Image.fromBytes(isolateData.cameraImage.height,
               isolateData.cameraImage.width, imgData);
 
-          // Free the memory space allocated
-          // from the planes and the converted data
           calloc.free(p);
           calloc.free(p1);
           calloc.free(p2);
@@ -124,7 +116,6 @@ class RecognitionIsolate {
   }
 }
 
-/// Bundles data to pass between Isolate
 class RecognitionIsolateData {
   CameraImage cameraImage;
   int interpreterAddress;

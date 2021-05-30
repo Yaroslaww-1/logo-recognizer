@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
@@ -74,22 +73,10 @@ class _CameraWidgetState extends State<CameraWidget>
 
       print(previewSize);
 
-      /// previewSize is size of raw input image to the model
       CameraConfig.inputImageSize = previewSize;
 
-      // the display width of image on screen is
-      // same as screenWidth while maintaining the aspectRatio
       Size screenSize = MediaQuery.of(context).size;
       CameraConfig.screenSize = screenSize;
-
-      // if (Platform.isAndroid) {
-      //   // On Android Platform image is initially rotated by 90 degrees
-      //   // due to the Flutter Camera plugin
-      //   CameraConfig.ratio = screenSize.width / previewSize.height;
-      // } else {
-      //   // For iOS
-      //   CameraConfig.ratio = screenSize.width / previewSize.width;
-      // }
     }();
   }
 

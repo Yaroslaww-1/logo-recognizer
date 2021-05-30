@@ -16,8 +16,6 @@ class LogoRecognizer extends StatefulWidget {
   _LogoRecognizerState createState() => _LogoRecognizerState();
 }
 
-// title: Text('Logo Recognizer'),
-
 class _LogoRecognizerState extends State<LogoRecognizer> {
   @override
   Widget build(BuildContext context) {

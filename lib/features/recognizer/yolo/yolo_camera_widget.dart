@@ -42,7 +42,6 @@ class _YOLOCameraWidgetState extends State<YOLOCameraWidget>
     isolate.start();
   }
 
-  /// Callback to receive each frame [CameraImage] perform inference on it
   Future<void> _processImageStream(CameraImage cameraImage) async {
     if (classifier.interpreter != null && classifier.labels != null) {
       var isolateData = RecognitionIsolateData(
@@ -51,14 +50,8 @@ class _YOLOCameraWidgetState extends State<YOLOCameraWidget>
         classifier.labels,
       );
 
-      // We could have simply used the compute method as well however
-      // it would be as in-efficient as we need to continuously passing data
-      // to another isolate.
-
-      /// perform inference in separate isolate
       Map<String, dynamic> inferenceResults = await inference(isolateData);
 
-      // pass results to HomeView
       widget.setRecognitions(
         inferenceResults["recognitions"],
         cameraImage.height,
