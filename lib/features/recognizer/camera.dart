@@ -3,19 +3,21 @@ import 'package:camera/camera.dart';
 import 'package:tflite/tflite.dart';
 import 'dart:math' as math;
 
-typedef void SetRegonitionsCallback(List<dynamic> list, int h, int w);
+import 'package:logo_recognizer/features/recognizer/recognition.dart';
 
-class RecognizerCameraWidget extends StatefulWidget {
-  final SetRegonitionsCallback setRecognitions;
+typedef void SetRecognitions(
+    List<Recognition> recognitions, int imageHeight, int imageWidth);
 
-  RecognizerCameraWidget(this.setRecognitions);
+class CameraWidget extends StatefulWidget {
+  final SetRecognitions setRecognitions;
+
+  CameraWidget(this.setRecognitions);
 
   @override
-  _RecognizerCameraWidgetState createState() =>
-      new _RecognizerCameraWidgetState();
+  _CameraWidgetState createState() => new _CameraWidgetState();
 }
 
-class _RecognizerCameraWidgetState extends State<RecognizerCameraWidget>
+class _CameraWidgetState extends State<CameraWidget>
     with WidgetsBindingObserver {
   CameraController _controller;
 
@@ -49,8 +51,8 @@ class _RecognizerCameraWidgetState extends State<RecognizerCameraWidget>
 
   @override
   void dispose() {
-    super.dispose();
     _controller?.dispose();
+    super.dispose();
   }
 
   @override
@@ -76,6 +78,7 @@ class _RecognizerCameraWidgetState extends State<RecognizerCameraWidget>
     _controller = new CameraController(
       _cameras[0],
       ResolutionPreset.medium,
+      enableAudio: false,
     );
     await _controller.initialize();
 
@@ -93,19 +96,31 @@ class _RecognizerCameraWidgetState extends State<RecognizerCameraWidget>
 
     setIsDetecting(true);
 
-    var recognitions = await Tflite.runModelOnFrame(
-        bytesList: img.planes.map((plane) {
-          return plane.bytes;
-        }).toList(),
-        imageHeight: img.height,
-        imageWidth: img.width,
-        imageMean: 127.5,
-        imageStd: 127.5,
-        numResults: 3,
-        rotation: 0,
-        threshold: 0.1);
+    var recognitions = await Tflite.detectObjectOnFrame(
+      bytesList: img.planes.map((plane) {
+        return plane.bytes;
+      }).toList(),
+      model: "SSDMobileNet",
+      imageHeight: img.height,
+      imageWidth: img.width,
+      imageMean: 127.5,
+      imageStd: 127.5,
+      numResultsPerClass: 1,
+      threshold: 0.5,
+    );
 
-    widget.setRecognitions(recognitions, img.height, img.width);
+    var _recognitions = recognitions
+        .map((recognition) => new Recognition(
+            recognition['rect']['x'],
+            recognition['rect']['y'],
+            recognition['rect']['w'],
+            recognition['rect']['h'],
+            recognition['detectedClass']))
+        .toList();
+
+    print(recognitions);
+
+    widget.setRecognitions(_recognitions, img.height, img.width);
 
     setIsDetecting(false);
   }
@@ -116,6 +131,21 @@ class _RecognizerCameraWidgetState extends State<RecognizerCameraWidget>
       return Container();
     }
 
-    return CameraPreview(_controller);
+    var tmp = MediaQuery.of(context).size;
+    var screenH = math.max(tmp.height, tmp.width);
+    var screenW = math.min(tmp.height, tmp.width);
+    tmp = _controller.value.previewSize;
+    var previewH = math.max(tmp.height, tmp.width);
+    var previewW = math.min(tmp.height, tmp.width);
+    var screenRatio = screenH / screenW;
+    var previewRatio = previewH / previewW;
+
+    return OverflowBox(
+      maxHeight:
+          screenRatio > previewRatio ? screenH : screenW / previewW * previewH,
+      maxWidth:
+          screenRatio > previewRatio ? screenH / previewH * previewW : screenW,
+      child: CameraPreview(_controller),
+    );
   }
 }
