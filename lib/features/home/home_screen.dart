@@ -17,10 +17,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text('TFlite Real Time Classification'),
-      ),
       body: Center(
         child: Container(
           child: Column(
@@ -29,7 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ButtonTheme(
                 child: ElevatedButton(
                   child: Text(
-                    "Start Classification",
+                    "Start",
                     style: TextStyle(fontSize: 25.0),
                   ),
                   onPressed: onStartClassificationClick,
