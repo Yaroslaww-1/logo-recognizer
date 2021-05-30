@@ -50,18 +50,17 @@ class _YOLOCameraWidgetState extends State<YOLOCameraWidget>
         classifier.labels,
       );
 
-      Map<String, dynamic> inferenceResults = await inference(isolateData);
+      Map<String, dynamic> results = await getRecognitions(isolateData);
 
       widget.setRecognitions(
-        inferenceResults["recognitions"],
+        results["recognitions"],
         cameraImage.height,
         cameraImage.width,
       );
     }
   }
 
-  /// Runs inference in another isolate
-  Future<Map<String, dynamic>> inference(
+  Future<Map<String, dynamic>> getRecognitions(
     RecognitionIsolateData isolateData,
   ) async {
     ReceivePort responsePort = ReceivePort();
