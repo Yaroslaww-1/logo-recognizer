@@ -10,8 +10,12 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  void onStartClassificationClick() {
-    Navigator.pushNamed(context, RouteEnum.RECOGNIZER);
+  void onUseSSDClick() {
+    Navigator.pushNamed(context, RouteEnum.SSD_RECOGNIZER);
+  }
+
+  void onUseYOLOClick() {
+    Navigator.pushNamed(context, RouteEnum.YOLO_RECOGNIZER);
   }
 
   @override
@@ -25,10 +29,19 @@ class _HomeScreenState extends State<HomeScreen> {
               ButtonTheme(
                 child: ElevatedButton(
                   child: Text(
-                    "Start",
+                    "Use SSD",
                     style: TextStyle(fontSize: 25.0),
                   ),
-                  onPressed: onStartClassificationClick,
+                  onPressed: onUseSSDClick,
+                ),
+              ),
+              ButtonTheme(
+                child: ElevatedButton(
+                  child: Text(
+                    "Use YOLO (much slower than SSD)",
+                    style: TextStyle(fontSize: 25.0),
+                  ),
+                  onPressed: onUseYOLOClick,
                 ),
               )
             ],

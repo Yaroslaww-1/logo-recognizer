@@ -10,11 +10,13 @@ class RecognitionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(recognition);
+
     return Positioned(
-      left: math.max(0, recognition.x),
-      top: math.max(0, recognition.y),
-      width: recognition.w,
-      height: recognition.h,
+      left: math.max(0, recognition.location.left),
+      top: math.max(0, recognition.location.top),
+      width: recognition.location.width,
+      height: recognition.location.height,
       child: Container(
         padding: EdgeInsets.only(top: 5.0, left: 5.0),
         decoration: BoxDecoration(

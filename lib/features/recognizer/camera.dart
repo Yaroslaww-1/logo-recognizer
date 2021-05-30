@@ -1,17 +1,16 @@
+import 'dart:io';
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
-import 'package:tflite/tflite.dart';
-import 'dart:math' as math;
 
-import 'package:logo_recognizer/features/recognizer/recognition.dart';
+import 'package:logo_recognizer/features/recognizer/camera_config.dart';
 
-typedef void SetRecognitions(
-    List<Recognition> recognitions, int imageHeight, int imageWidth);
+typedef Future<void> ProcessImage(CameraImage cameraImage);
 
 class CameraWidget extends StatefulWidget {
-  final SetRecognitions setRecognitions;
+  final ProcessImage processImage;
 
-  CameraWidget(this.setRecognitions);
+  CameraWidget(this.processImage);
 
   @override
   _CameraWidgetState createState() => new _CameraWidgetState();
@@ -23,6 +22,10 @@ class _CameraWidgetState extends State<CameraWidget>
 
   bool _isDetecting = false;
   void setIsDetecting(bool isDetecting) {
+    if (!mounted) {
+      return;
+    }
+
     setState(() {
       _isDetecting = isDetecting;
     });
@@ -62,6 +65,23 @@ class _CameraWidgetState extends State<CameraWidget>
     () async {
       await _initializeCameras();
       await _initializeImageStreamProcessing();
+
+      Size previewSize = _controller.value.previewSize;
+      previewSize = new Size(
+        math.min(previewSize.height, previewSize.width),
+        math.max(previewSize.height, previewSize.width),
+      );
+
+      CameraConfig.inputImageSize = previewSize;
+
+      Size screenSize = MediaQuery.of(context).size;
+      CameraConfig.screenSize = screenSize;
+
+      if (Platform.isAndroid) {
+        CameraConfig.ratio = screenSize.width / previewSize.width;
+      } else {
+        CameraConfig.ratio = screenSize.width / previewSize.width;
+      }
     }();
   }
 
@@ -96,32 +116,7 @@ class _CameraWidgetState extends State<CameraWidget>
 
     setIsDetecting(true);
 
-    var recognitions = await Tflite.detectObjectOnFrame(
-      bytesList: img.planes.map((plane) {
-        return plane.bytes;
-      }).toList(),
-      model: "SSDMobileNet",
-      imageHeight: img.height,
-      imageWidth: img.width,
-      imageMean: 127.5,
-      imageStd: 127.5,
-      numResultsPerClass: 1,
-      threshold: 0.5,
-    );
-
-    var _recognitions = recognitions
-        .map((recognition) => new Recognition(
-            recognition['rect']['x'],
-            recognition['rect']['y'],
-            recognition['rect']['w'],
-            recognition['rect']['h'],
-            recognition["confidenceInClass"],
-            recognition['detectedClass']))
-        .toList();
-
-    print(recognitions);
-
-    widget.setRecognitions(_recognitions, img.height, img.width);
+    await widget.processImage(img);
 
     setIsDetecting(false);
   }
