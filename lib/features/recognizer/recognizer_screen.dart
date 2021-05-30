@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:tflite/tflite.dart';
-import 'dart:math' as math;
 
-import 'recognizer_camera_widget.dart';
-import 'regonizer_text_preview.dart';
+import 'package:logo_recognizer/features/recognizer/recognition.dart';
+import 'package:logo_recognizer/features/recognizer/recognitions_widget.dart';
+import 'camera.dart';
+import 'dart:math' as math;
 
 class RecognizerScreen extends StatefulWidget {
   RecognizerScreen();
@@ -13,7 +14,7 @@ class RecognizerScreen extends StatefulWidget {
 }
 
 class _RecognizerScreenState extends State<RecognizerScreen> {
-  List<dynamic> _recognitions;
+  List<Recognition> _recognitions;
   int _imageHeight = 0;
   int _imageWidth = 0;
 
@@ -25,13 +26,13 @@ class _RecognizerScreenState extends State<RecognizerScreen> {
 
   Future<void> loadModel() async {
     await Tflite.loadModel(
-      model: "assets/mobilenet_v2_1.0_224.tflite",
-      labels: "assets/labels.txt",
+      model: "assets/ssd_mobilenet_logodet.tflite",
+      labels: "assets/ssd_mobilenet_logodet_classes.txt",
     );
   }
 
   void setRecognitions(
-      List<dynamic> recognitions, int imageHeight, int imageWidth) {
+      List<Recognition> recognitions, int imageHeight, int imageWidth) {
     setState(() {
       _recognitions = recognitions;
       _imageHeight = imageHeight;
@@ -42,21 +43,13 @@ class _RecognizerScreenState extends State<RecognizerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text('TFlite Real Time Classification'),
-      ),
-      body: Column(
+      body: Stack(
         children: [
-          Expanded(
-            child: RecognizerCameraWidget(
-              setRecognitions,
-            ),
-          ),
-          Flexible(
-            child: RecognizerTextPreview(
-              _recognitions == null ? [] : _recognitions,
-            ),
+          CameraWidget(setRecognitions),
+          RecognitionsWidget(
+            _recognitions == null ? [] : _recognitions,
+            math.max(_imageHeight, _imageWidth),
+            math.min(_imageHeight, _imageWidth),
           ),
         ],
       ),
