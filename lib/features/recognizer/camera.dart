@@ -115,6 +115,7 @@ class _CameraWidgetState extends State<CameraWidget>
             recognition['rect']['y'],
             recognition['rect']['w'],
             recognition['rect']['h'],
+            recognition["confidenceInClass"],
             recognition['detectedClass']))
         .toList();
 

@@ -45,7 +45,14 @@ class RecognitionsWidget extends StatelessWidget {
       if (_y < difH / 2) h -= (difH / 2 - _y) * scaleH;
     }
 
-    return new Recognition(x, y, w, h, recognition.label);
+    return new Recognition(
+      x,
+      y,
+      w,
+      h,
+      recognition.confidence,
+      recognition.label,
+    );
   }
 
   @override
