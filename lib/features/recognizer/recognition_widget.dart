@@ -10,6 +10,8 @@ class RecognitionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(recognition);
+
     return Positioned(
       left: math.max(0, recognition.location.left),
       top: math.max(0, recognition.location.top),
