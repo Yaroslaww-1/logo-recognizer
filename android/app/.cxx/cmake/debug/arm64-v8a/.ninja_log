@@ -1,3 +1,5 @@
 # ninja log v5
 0	16	1622390182	CMakeFiles/convertImage.dir/home/yaroslav/Programming/flutter/logo-recognizer/ios/Classes/converter.c.o	81aee59ae89fbf02
 16	25	1622390182	/home/yaroslav/Programming/flutter/logo-recognizer/build/app/intermediates/cmake/debug/obj/arm64-v8a/libconvertImage.so	fa852ce503b0fc2a
+0	57	1622402491	CMakeFiles/convertImage.dir/home/yaroslav/Programming/flutter/logo-recognizer/ios/Classes/converter.c.o	81aee59ae89fbf02
+58	81	1622402491	/home/yaroslav/Programming/flutter/logo-recognizer/build/app/intermediates/cmake/debug/obj/arm64-v8a/libconvertImage.so	fa852ce503b0fc2a
