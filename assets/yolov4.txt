@@ -1,28 +1,32 @@
-Bacardi
-AirNow
-lindt
-Beers of Stone
-Cigar City
-BP
-Apple
-Mazda
-IBM
-sf express
-Canon
-pepsi lime
-nestle
-coca cola
-GUINNESS
-Lamborghini
-Esselte
-HARMAN KARDON
-toblerone
-Costco Wholesale
-ExxonMobil
-BMW
-McDonald's
-7-Up
-Adidas SB
-Lada
-Corona
-Heineken
+adidas
+aldi
+apple
+becks
+bmw
+carlsberg
+chimay
+cocacola
+corona
+dhl
+erdinger
+esso
+fedex
+ferrari
+ford
+fosters
+google
+guinness
+heineken
+HP
+milka
+nvidia
+paulaner
+pepsi
+rittersport
+shell
+singha
+starbucks
+stellaartois
+texaco
+tsingtao
+ups
