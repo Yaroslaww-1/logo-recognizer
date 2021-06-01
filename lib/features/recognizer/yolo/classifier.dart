@@ -161,6 +161,7 @@ class ClassifierYolo {
     if (_interpreter == null) {
       return null;
     }
+
     TensorImage inputImage = TensorImage(TfLiteType.float32);
     inputImage.loadImage(image);
 

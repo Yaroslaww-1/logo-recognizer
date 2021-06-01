@@ -34,35 +34,25 @@ class _YOLORecognizerScreenState extends State<YOLORecognizerScreen> {
   Recognition updateRecognitionPosition(
     Recognition recognition,
   ) {
-    var screenH = CameraConfig.screenSize.height;
     var screenW = CameraConfig.screenSize.width;
-    var previewH = CameraConfig.inputImageSize.height;
     var previewW = CameraConfig.inputImageSize.width;
 
     var _x = recognition.location.left;
     var _w = recognition.location.width;
     var _y = recognition.location.top;
     var _h = recognition.location.height;
-    var scaleW, scaleH, x, y, w, h;
+    var x, y, w, h;
 
-    scaleW = screenH / previewH * previewW;
-    scaleH = screenH;
-    var difW = (scaleW - screenW) / scaleW;
-    x = (_x - difW / 2) * scaleW;
-    w = _w * scaleW;
-    if (_x < difW / 2) w -= (difW / 2 - _x) * scaleW;
-    y = _y * scaleH;
-    h = _h * scaleH;
+    var difW = previewW - screenW;
+    x = _x - difW / 2;
+    w = _w;
+    y = _y;
+    h = _h;
 
     return new Recognition(
       recognition.label,
       recognition.confidence,
-      new Rect.fromLTWH(
-        x / previewW - 80,
-        y / previewH,
-        w / previewW,
-        h / previewH,
-      ),
+      new Rect.fromLTWH(x, y, w, h),
     );
   }
 
